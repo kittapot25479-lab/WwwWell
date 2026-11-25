@@ -1,0 +1,50 @@
+========================================
+  วิธีเชื่อม Firebase Database (ฟรี)
+  เพื่อเอาเว็บขึ้นโดเมนใช้จริง
+========================================
+
+1) สร้างโปรเจกต์ Firebase
+   - เปิด https://console.firebase.google.com
+   - กด "เพิ่มโปรเจกต์" → ตั้งชื่อ เช่น godmyegxo
+   - ปิด Google Analytics ก็ได้ (ไม่จำเป็น)
+
+2) สร้าง Web App
+   - ในโปรเจกต์ กดไอคอน Web </>
+   - ตั้งชื่อแอป → ลงทะเบียน
+   - จะได้ค่า firebaseConfig มา
+
+3) เปิด Firestore Database
+   - เมนู Build → Firestore Database
+   - กด Create database
+   - เลือก "Start in test mode" (สำหรับเริ่มต้น)
+   - เลือก region ใกล้สุด (asia-southeast1)
+
+4) ใส่ Config ในไฟล์เว็บ
+   - เปิดไฟล์:  js/firebase-config.js
+   - วางค่าจาก Firebase แทน YOUR_API_KEY ฯลฯ
+   - เปลี่ยน  USE_FIREBASE = true
+
+   ตัวอย่าง:
+   const FIREBASE_CONFIG = {
+     apiKey: "AIza...",
+     authDomain: "godmyegxo.firebaseapp.com",
+     projectId: "godmyegxo",
+     storageBucket: "godmyegxo.appspot.com",
+     messagingSenderId: "123456789",
+     appId: "1:123456789:web:abc"
+   };
+   const USE_FIREBASE = true;
+
+5) อัปโหลดเว็บขึ้นโฮสต์
+   - Cloudflare Pages / Netlify / Vercel
+   - เชื่อมโดเมน .com ของคุณ
+
+6) ตรวจใน Admin Panel
+   - เปิด /admin/
+   - มุมบนขวาจะขึ้น "● เชื่อม Database แล้ว (Firebase)"
+
+หมายเหตุความปลอดภัย:
+- โหมด test mode ของ Firestore เปิดให้ทุกคนอ่าน/เขียนได้ 30 วัน
+- ก่อนขึ้น production จริง ควรตั้ง Rules ให้เหมาะสม
+  (หรือใส่ Authentication ภายหลัง)
+

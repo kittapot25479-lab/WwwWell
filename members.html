@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members | GODMYEGXO</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="members-page">
+  <audio id="bgMusic" loop></audio>
+
+  <header class="members-header">
+    <div class="header-content">
+      <h1 class="site-title" id="siteTitle">GODMYEGXO</h1>
+      <p class="site-subtitle" id="siteSubtitle">EST. 2026</p>
+    </div>
+  </header>
+
+  <main class="members-main">
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="SEARCH MEMBERS..." />
+    </div>
+
+    <div class="rank-stats" id="rankStats">
+      <!-- Filled by JS -->
+    </div>
+
+    <section class="rank-section" id="foundersSection">
+      <h2 class="rank-title">
+        <i class="fas fa-crown"></i> FOUNDERS <span class="count" id="foundersCount">/ 00</span>
+      </h2>
+      <div class="members-grid" id="foundersGrid"></div>
+    </section>
+
+    <section class="rank-section" id="leadersSection">
+      <h2 class="rank-title">
+        <i class="fas fa-star"></i> LEADERS <span class="count" id="leadersCount">/ 00</span>
+      </h2>
+      <div class="members-grid" id="leadersGrid"></div>
+    </section>
+
+    <section class="rank-section" id="membersSection">
+      <h2 class="rank-title">
+        <i class="fas fa-users"></i> MEMBERS <span class="count" id="membersCount">/ 00</span>
+      </h2>
+      <div class="members-grid" id="membersGrid"></div>
+    </section>
+  </main>
+
+  <!-- Mini Player -->
+  <div class="mini-player" id="miniPlayer">
+    <div class="player-info">
+      <div class="player-icon"><i class="fas fa-music"></i></div>
+      <div class="player-text">
+        <div class="track-name" id="trackName">Ariana Grande - bye [Altare Remix]</div>
+        <div class="track-artist">GODMYEGXO</div>
+      </div>
+    </div>
+    <div class="player-controls">
+      <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+      <input type="range" id="volumeSlider" min="0" max="100" value="50" />
+    </div>
+  </div>
+
+    <script src="js/config.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/members.js"></script>
+</body>
+</html>

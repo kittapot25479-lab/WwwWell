@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GODMYEGXO | Official</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <canvas id="snow-canvas"></canvas>
+
+  <!-- Admin button top-left -->
+  <button class="admin-fab" id="adminFab" title="Admin Panel">
+    <i class="fas fa-shield-halved"></i>
+  </button>
+
+  <audio id="bgMusic" loop></audio>
+
+  <!-- ========== GATE ========== -->
+  <div class="view" id="view-gate">
+    <div class="gate-overlay"></div>
+    <div class="gate-content">
+      <div id="gateLogoArea">
+        <div class="logo-circle" id="defaultLogo"><i class="fas fa-crown"></i></div>
+      </div>
+      <h1 class="site-title" id="siteTitle">GODMYEGXO</h1>
+      <p class="site-subtitle" id="siteSubtitle">EST. 2026</p>
+      <button class="enter-btn" id="enterBtn">
+        <span id="enterText">ENTER</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+      <div class="social-links" id="socialLinks"></div>
+    </div>
+  </div>
+
+  <!-- ========== MEMBERS ========== -->
+  <div class="view" id="view-members">
+    <div class="members-header">
+      <h1 class="site-title" id="membersTitle">GODMYEGXO</h1>
+      <p class="site-subtitle" id="membersSubtitle">EST. 2026</p>
+    </div>
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="SEARCH MEMBERS..." />
+    </div>
+    <div class="rank-stats" id="rankStats"></div>
+
+    <div id="foundersSection">
+      <div class="section-title"><i class="fas fa-crown" style="color:var(--founder)"></i> FOUNDERS <span class="count" id="foundersCount">/ 00</span></div>
+      <div class="members-grid" id="foundersGrid"></div>
+    </div>
+    <div id="leadersSection">
+      <div class="section-title"><i class="fas fa-star" style="color:var(--leader)"></i> LEADERS <span class="count" id="leadersCount">/ 00</span></div>
+      <div class="members-grid" id="leadersGrid"></div>
+    </div>
+    <div id="membersSection">
+      <div class="section-title"><i class="fas fa-users" style="color:var(--member)"></i> MEMBERS <span class="count" id="membersCount">/ 00</span></div>
+      <div class="members-grid" id="membersGrid"></div>
+    </div>
+  </div>
+
+  <!-- ========== ADMIN ========== -->
+  <div class="view" id="view-admin">
+    <div class="admin-layout">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">AP</div>
+          <div class="brand">
+            <strong>ADMIN PANEL</strong>
+            <small id="sidebarSiteName">GODMYEGXO</small>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <div class="nav-label">จัดการเว็บไซต์</div>
+          <button class="nav-item active" data-admin="dashboard"><i class="fas fa-chart-line"></i> <span>ภาพรวม</span></button>
+          <button class="nav-item" data-admin="members"><i class="fas fa-users"></i> <span>จัดการสมาชิก</span></button>
+          <button class="nav-item" data-admin="settings"><i class="fas fa-cog"></i> <span>ตั้งค่าเว็บไซต์</span></button>
+        </nav>
+        <div class="sidebar-footer">
+          <button class="btn-back-site" id="backToSite"><i class="fas fa-arrow-left"></i> <span>กลับหน้าเว็บ</span></button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <h1 id="adminPageTitle">ภาพรวม</h1>
+          <div id="dbStatus"></div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="admin-section" id="admin-dashboard">
+          <div class="stats-row">
+            <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">สมาชิกทั้งหมด</div></div>
+            <div class="stat-card"><div class="num" id="statFounders">0</div><div class="label">Founders</div></div>
+            <div class="stat-card"><div class="num" id="statLeaders">0</div><div class="label">Leaders</div></div>
+            <div class="stat-card"><div class="num" id="statMembers">0</div><div class="label">Members</div></div>
+          </div>
+          <div class="card">
+            <h3><i class="fas fa-info-circle"></i> ยินดีต้อนรับ</h3>
+            <p style="color:var(--text-muted);line-height:1.6">ใช้เมนูด้านซ้ายเพื่อจัดการสมาชิกและตกแต่งเว็บไซต์ ข้อมูลจะถูกบันทึกอัตโนมัติ</p>
+          </div>
+        </div>
+
+        <!-- Members Admin -->
+        <div class="admin-section" id="admin-members" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+            <input type="text" id="memberSearch" placeholder="ค้นหาสมาชิก..." style="padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:var(--font);min-width:200px" />
+            <button class="btn-primary" id="addMemberBtn"><i class="fas fa-plus"></i> เพิ่มสมาชิก</button>
+          </div>
+          <div class="card" style="overflow-x:auto">
+            <table class="admin-table">
+              <thead><tr><th>สมาชิก</th><th>ยศ</th><th>จัดการ</th></tr></thead>
+              <tbody id="membersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="admin-section" id="admin-settings" style="display:none">
+          <div class="tabs">
+            <button class="tab active" data-tab="general">ทั่วไป</button>
+            <button class="tab" data-tab="design">ตกแต่ง</button>
+            <button class="tab" data-tab="music">เสียงเพลง</button>
+            <button class="tab" data-tab="danger">Danger Zone</button>
+          </div>
+
+          <div class="tab-content active" id="tab-general">
+            <div class="card">
+              <h3><i class="fas fa-globe"></i> ข้อมูลเว็บไซต์</h3>
+              <div class="form-grid">
+                <div class="form-group"><label>ชื่อเว็บ</label><input id="settingTitle" /></div>
+                <div class="form-group"><label>คำบรรยาย</label><input id="settingSubtitle" /></div>
+                <div class="form-group"><label>ข้อความปุ่ม Enter</label><input id="settingEnterText" /></div>
+                <div class="form-group"><label>Discord Link</label><input id="settingDiscord" placeholder="https://discord.gg/..." /></div>
+                <div class="form-group"><label>Facebook Link</label><input id="settingFacebook" placeholder="https://facebook.com/..." /></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="tab-design">
+            <div class="card">
+              <h3><i class="fas fa-palette"></i> ธีมสี</h3>
+              <div class="theme-grid" id="themeGrid">
+                <label class="theme-option"><input type="radio" name="theme" value="default" checked /><div class="theme-preview" style="background:linear-gradient(135deg,#0a0a0f,#c9a227)"></div><span>Default Gold</span></label><label class="theme-option"><input type="radio" name="theme" value="neon" /><div class="theme-preview" style="background:linear-gradient(135deg,#050d0a,#00ff9d)"></div><span>Neon Circuit</span></label><label class="theme-option"><input type="radio" name="theme" value="crimson" /><div class="theme-preview" style="background:linear-gradient(135deg,#0f0508,#e74c3c)"></div><span>Crimson Night</span></label><label class="theme-option"><input type="radio" name="theme" value="aurora" /><div class="theme-preview" style="background:linear-gradient(135deg,#07070f,#818cf8)"></div><span>Aurora</span></label><label class="theme-option"><input type="radio" name="theme" value="gold" /><div class="theme-preview" style="background:linear-gradient(135deg,#0f0c05,#f0c14b)"></div><span>Royal Gold</span></label><label class="theme-option"><input type="radio" name="theme" value="ocean" /><div class="theme-preview" style="background:linear-gradient(135deg,#050a0f,#0ea5e9)"></div><span>Deep Ocean</span></label><label class="theme-option"><input type="radio" name="theme" value="purple" /><div class="theme-preview" style="background:linear-gradient(135deg,#0a0612,#a855f7)"></div><span>Purple Haze</span></label><label class="theme-option"><input type="radio" name="theme" value="rose" /><div class="theme-preview" style="background:linear-gradient(135deg,#10060c,#f43f5e)"></div><span>Rose Bloom</span></label><label class="theme-option"><input type="radio" name="theme" value="mint" /><div class="theme-preview" style="background:linear-gradient(135deg,#050f0c,#2dd4bf)"></div><span>Mint Fresh</span></label><label class="theme-option"><input type="radio" name="theme" value="sunset" /><div class="theme-preview" style="background:linear-gradient(135deg,#0f0805,#f97316)"></div><span>Sunset Glow</span></label><label class="theme-option"><input type="radio" name="theme" value="ice" /><div class="theme-preview" style="background:linear-gradient(135deg,#060a10,#67e8f9)"></div><span>Ice Crystal</span></label><label class="theme-option"><input type="radio" name="theme" value="forest" /><div class="theme-preview" style="background:linear-gradient(135deg,#060a06,#22c55e)"></div><span>Forest</span></label><label class="theme-option"><input type="radio" name="theme" value="midnight" /><div class="theme-preview" style="background:linear-gradient(135deg,#04040a,#6366f1)"></div><span>Midnight</span></label><label class="theme-option"><input type="radio" name="theme" value="cherry" /><div class="theme-preview" style="background:linear-gradient(135deg,#0f0508,#ec4899)"></div><span>Cherry</span></label><label class="theme-option"><input type="radio" name="theme" value="amber" /><div class="theme-preview" style="background:linear-gradient(135deg,#0f0a04,#f59e0b)"></div><span>Amber</span></label><label class="theme-option"><input type="radio" name="theme" value="slate" /><div class="theme-preview" style="background:linear-gradient(135deg,#0a0a0c,#94a3b8)"></div><span>Slate</span></label><label class="theme-option"><input type="radio" name="theme" value="cyber" /><div class="theme-preview" style="background:linear-gradient(135deg,#050510,#06b6d4)"></div><span>Cyber Punk</span></label><label class="theme-option"><input type="radio" name="theme" value="blood" /><div class="theme-preview" style="background:linear-gradient(135deg,#0c0404,#dc2626)"></div><span>Blood Red</span></label><label class="theme-option"><input type="radio" name="theme" value="lavender" /><div class="theme-preview" style="background:linear-gradient(135deg,#0c0812,#c4b5fd)"></div><span>Lavender</span></label><label class="theme-option"><input type="radio" name="theme" value="emerald" /><div class="theme-preview" style="background:linear-gradient(135deg,#040c08,#10b981)"></div><span>Emerald</span></label><label class="theme-option"><input type="radio" name="theme" value="copper" /><div class="theme-preview" style="background:linear-gradient(135deg,#0c0804,#d97706)"></div><span>Copper</span></label><label class="theme-option"><input type="radio" name="theme" value="steel" /><div class="theme-preview" style="background:linear-gradient(135deg,#08090c,#3b82f6)"></div><span>Steel Blue</span></label><label class="theme-option"><input type="radio" name="theme" value="pinkneon" /><div class="theme-preview" style="background:linear-gradient(135deg,#0c0410,#e879f9)"></div><span>Pink Neon</span></label><label class="theme-option"><input type="radio" name="theme" value="lime" /><div class="theme-preview" style="background:linear-gradient(135deg,#080c04,#84cc16)"></div><span>Lime</span></label><label class="theme-option"><input type="radio" name="theme" value="wine" /><div class="theme-preview" style="background:linear-gradient(135deg,#0c0408,#be123c)"></div><span>Wine</span></label>
+              </div>
+            </div>
+            <div class="card">
+              <h3><i class="fas fa-image"></i> รูปภาพ & พื้นหลัง</h3>
+              <div class="form-grid">
+                <div class="form-group full">
+                  <label>โลโก้ / รูปหน้าเข้าเว็บ (URL รูป)</label>
+                  <input id="settingLogo" placeholder="https://...jpg" />
+                  <small>ใส่ลิงก์รูป จะแสดงแทนไอคอนมงกุฎบนหน้าเข้าเว็บ</small>
+                </div>
+                <div class="form-group full">
+                  <label>พื้นหลังหน้าเข้าเว็บ (URL รูป)</label>
+                  <input id="settingBgGate" placeholder="https://...jpg" />
+                </div>
+                <div class="form-group full">
+                  <label>พื้นหลังหน้าสมาชิก (URL รูป)</label>
+                  <input id="settingBgMembers" placeholder="https://...jpg" />
+                </div>
+                <div class="form-group">
+                  <label>สีหลัก (Accent)</label>
+                  <input type="color" id="settingAccent" value="#c9a227" />
+                </div>
+                <div class="form-group">
+                  <label>สีพื้นหลัง (Background)</label>
+                  <input type="color" id="settingCustomBg" value="#0a0a0f" />
+                </div>
+                <div class="form-group">
+                  <label>สีการ์ด (Card)</label>
+                  <input type="color" id="settingCustomCard" value="#12121a" />
+                </div>
+                <div class="form-group">
+                  <label>ความโปร่งใสพื้นหลังภาพ: <span id="overlayValue">55%</span></label>
+                  <input type="range" id="settingOverlay" min="0" max="90" value="55" />
+                  <small>ยิ่งต่ำ = เห็นรูปพื้นหลังชัดขึ้น / โปร่งใสมากขึ้น</small>
+                </div>
+                <div class="form-group">
+                  <label>หิมะตก</label>
+                  <select id="settingSnow">
+                    <option value="on">เปิด</option>
+                    <option value="off">ปิด</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="tab-music">
+            <div class="card">
+              <h3><i class="fas fa-music"></i> เพลงพื้นหลัง</h3>
+              <div class="form-group">
+                <label>ลิงก์เพลง (YouTube หรือ .mp3)</label>
+                <input id="settingMusicUrl" placeholder="https://www.youtube.com/watch?v=..." />
+                <small>แนะนำใช้ Live Server / โฮสต์จริง เพื่อให้ YouTube เล่นได้</small>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>ระดับเสียง: <span id="volumeValue">50%</span></label>
+                  <input type="range" id="settingVolume" min="0" max="100" value="50" />
+                </div>
+                <div class="form-group">
+                  <label><input type="checkbox" id="settingShowPlayer" checked /> แสดง Mini Player</label>
+                </div>
+                <div class="form-group">
+                  <label><input type="checkbox" id="settingAutoPlay" checked /> Autoplay (หลังคลิกครั้งแรก)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="tab-danger">
+            <div class="card">
+              <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+              <p style="color:var(--text-muted);margin-bottom:16px">ลบข้อมูลทั้งหมดในเครื่องนี้ (localStorage)</p>
+              <button class="btn-danger" id="resetAllBtn">รีเซ็ตระบบทั้งหมด</button>
+            </div>
+          </div>
+
+          <button class="btn-primary" id="saveSettingsBtn" style="margin-top:8px"><i class="fas fa-save"></i> บันทึกการตั้งค่า</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Mini Player -->
+  <div class="mini-player" id="miniPlayer">
+    <div class="player-info">
+      <div class="player-icon"><i class="fas fa-music"></i></div>
+      <div class="player-text">
+        <div class="track-name" id="trackName">Ariana Grande - bye [Altare Remix]</div>
+        <div class="track-artist">GODMYEGXO</div>
+      </div>
+    </div>
+    <div class="player-controls">
+      <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+      <input type="range" id="volumeSlider" min="0" max="100" value="50" />
+    </div>
+  </div>
+
+
+  <!-- Admin Password Modal -->
+  <div class="modal-overlay" id="adminPassModal">
+    <div class="modal" style="max-width:360px">
+      <h2 style="text-align:center"><i class="fas fa-lock" style="color:var(--accent)"></i> Admin Access</h2>
+      <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:16px">กรุณาใส่รหัสผ่านเพื่อเข้า Admin Panel</p>
+      <div class="form-group">
+        <label>รหัสผ่าน</label>
+        <input type="password" id="adminPasswordInput" placeholder="••••••••" autocomplete="off" />
+      </div>
+      <p id="adminPassError" style="color:#e74c3c;font-size:0.85rem;display:none;margin-bottom:8px">รหัสผ่านไม่ถูกต้อง</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-danger" id="cancelAdminPass" style="border-color:var(--border);color:var(--text-muted)">ยกเลิก</button>
+        <button type="button" class="btn-primary" id="submitAdminPass">เข้าสู่ระบบ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Member Modal -->
+  <div class="modal-overlay" id="memberModal">
+    <div class="modal">
+      <h2 id="modalTitle">เพิ่มสมาชิก</h2>
+      <form id="memberForm">
+        <input type="hidden" id="memberId" />
+        <div class="form-group"><label>ชื่อ</label><input id="memberName" required /></div>
+        <div class="form-group">
+          <label>ยศ</label>
+          <select id="memberRank">
+            <option value="founder">Founder</option>
+            <option value="leader">Leader</option>
+            <option value="member">Member</option>
+          </select>
+        </div>
+        <div class="form-group"><label>รูปโปรไฟล์ (URL)</label><input id="memberAvatar" placeholder="https://..." /></div>
+        <div class="form-group"><label>ลิงก์ Facebook</label><input id="memberFacebook" placeholder="https://facebook.com/..." /></div>
+        <div class="form-group"><label>ลิงก์อื่น</label><input id="memberOtherLink" placeholder="https://..." /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn-danger" id="cancelModal" style="border-color:var(--border);color:var(--text-muted)">ยกเลิก</button>
+          <button type="submit" class="btn-primary">บันทึก</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
